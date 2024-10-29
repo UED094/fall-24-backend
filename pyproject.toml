@@ -26,6 +26,10 @@ classifiers = [
 ]
 dependencies = [
     "fastapi[all]>=0.115.4",
+    "passlib[bcrypt]>=1.7.4",
+    "pyjwt>=2.9.0",
+    "sqlalchemy>=2.0.36",
+    "sqlmodel>=0.0.22",
 ]
 
 [project.urls]
