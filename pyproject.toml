@@ -24,7 +24,9 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = [
+    "fastapi[all]>=0.115.4",
+]
 
 [project.urls]
 Documentation = "https://github.com/Ugur Emre Dogan/app#readme"
