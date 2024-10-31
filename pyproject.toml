@@ -27,6 +27,7 @@ classifiers = [
 dependencies = [
     "fastapi[all]>=0.115.4",
     "passlib[bcrypt]>=1.7.4",
+    "pydantic-settings>=2.6.0",
     "pyjwt>=2.9.0",
     "python-dotenv>=1.0.1",
     "sqlalchemy>=2.0.36",
