@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from app.core.config import settings
 
 
-SQLITE_FILE_NAME = "database.db"
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{SQLITE_FILE_NAME}"
+SQLALCHEMY_DATABASE_URL = settings.SQLALCHEMY_DATABASE_URL
 
 # TODO: Change this to environment variable
 
