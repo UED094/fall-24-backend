@@ -1,13 +1,13 @@
 from datetime import UTC, datetime, timedelta
 
 import jwt
-from jwt.exceptions import InvalidTokenError
+from fastapi import HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 
 from app.core.config import get_settings
 from app.schemas.token import TokenData
-from fastapi import HTTPException, status
 
 settings = get_settings()
 
