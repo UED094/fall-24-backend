@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
+from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 
@@ -17,5 +18,5 @@ class User(Base):
     verification_code = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.now(UTC))
 
-
-# TODO: include table relationships for transactions and categories
+    categories = relationship("Category", back_populates="user")
+    transactions = relationship("Transaction", back_populates="user")
