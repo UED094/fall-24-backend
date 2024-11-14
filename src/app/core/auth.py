@@ -1,10 +1,13 @@
 from datetime import UTC, datetime, timedelta
 
 import jwt
+from jwt.exceptions import InvalidTokenError
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
 from app.core.config import get_settings
+from app.schemas.token import TokenData
+from fastapi import HTTPException, status
 
 settings = get_settings()
 
@@ -23,7 +26,24 @@ def get_password_hash(password: str):
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
-    expire = datetime.now(UTC) + (expires_delta if expires_delta else timedelta(minutes=15))
+    expire = datetime.now(UTC) + (
+        expires_delta if expires_delta else timedelta(minutes=15)
+    )
 
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+
+def decode_access_token(token: str) -> TokenData:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Token invalid"
+            )
+        return TokenData(username=username)
+    except InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token invalid"
+        ) from None

@@ -28,7 +28,9 @@ def get_user_by_email(db: Session, email: str):
 # Register a new user
 def create_user(db: Session, user: UserCreate):
     if get_user_by_username(db, user.username) or get_user_by_email(db, user.email):
-        raise HTTPException(status_code=400, detail="Username or email already registered")
+        raise HTTPException(
+            status_code=400, detail="Username or email already registered"
+        )
 
     password_hash = bcrypt.hash(user.password)
     verification_code = secrets.token_urlsafe(32)
@@ -57,3 +59,8 @@ def authenticate_user(db: Session, username: str, password: str):
     if not verify_password(password, user.password_hash):
         return None
     return user
+
+
+def verify_email(verification_code: str, db: Session):
+    # TODO: Implement email verification
+    pass
