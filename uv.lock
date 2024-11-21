@@ -34,7 +34,9 @@ source = { editable = "." }
 dependencies = [
     { name = "fastapi", extra = ["all"] },
     { name = "passlib", extra = ["bcrypt"] },
+    { name = "pydantic-settings" },
     { name = "pyjwt" },
+    { name = "python-dotenv" },
     { name = "sqlalchemy" },
     { name = "sqlmodel" },
 ]
@@ -43,7 +45,9 @@ dependencies = [
 requires-dist = [
     { name = "fastapi", extras = ["all"], specifier = ">=0.115.4" },
     { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7.4" },
+    { name = "pydantic-settings", specifier = ">=2.6.0" },
     { name = "pyjwt", specifier = ">=2.9.0" },
+    { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
 ]
