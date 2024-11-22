@@ -32,6 +32,15 @@ def get_all_categories(
     return category_service.get_categories(db, user.id)
 
 
+@router.get("/metrics")
+def get_category_financial_metrics(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
+    username = decode_access_token(token).username
+    user = get_user_by_username(db, username)
+    return category_service.get_category_metrics(db, user.id)
+
+
 # Get a category by ID
 @router.get("/{category_id}", response_model=CategoryResponse)
 def get_category_details(
