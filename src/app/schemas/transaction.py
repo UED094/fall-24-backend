@@ -22,6 +22,7 @@ class TransactionResponse(BaseModel):
     description: str | None
     transaction_type: TransactionType
     transaction_date: datetime
+    category_name: str
 
     class Config:
         from_attributes = True
