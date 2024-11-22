@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.transaction import Transaction
 from app.schemas.transaction import TransactionCreate
+from sqlalchemy import func
 
 
 # Transaction CRUD
@@ -45,3 +46,46 @@ def delete_transaction(db: Session, transaction_id: int, user_id: int):
     ).delete()
     db.commit()
     return True
+
+
+def get_transaction_metrics(db: Session, user_id: int):
+    """
+    Calculate total balance, income, and expenses for a user
+
+    Args:
+        db (Session): Database session
+        user_id (int): ID of the user
+
+    Returns:
+        dict: Dictionary containing total balance, income, and expenses
+    """
+    # Calculate total income (positive transactions)
+    total_income = (
+        db.query(func.sum(Transaction.amount))
+        .filter(
+            Transaction.user_id == user_id,
+            Transaction.transaction_type == "income",
+        )
+        .scalar()
+        or 0
+    )
+
+    # Calculate total expenses (negative transactions)
+    total_expenses = (
+        db.query(func.sum(Transaction.amount))
+        .filter(
+            Transaction.user_id == user_id,
+            Transaction.transaction_type == "expense",
+        )
+        .scalar()
+        or 0
+    )
+
+    # Calculate total balance (sum of all transactions)
+    total_balance = total_income - total_expenses
+
+    return {
+        "total_balance": round(total_balance, 2),
+        "total_income": round(total_income, 2),
+        "total_expenses": round(abs(total_expenses), 2),
+    }
