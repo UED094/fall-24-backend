@@ -6,8 +6,12 @@ import app.services.user as user_service
 from app.core.auth import decode_access_token, oauth2_scheme
 from app.dependencies import get_db
 from app.schemas.transaction import TransactionCreate, TransactionResponse
+from fastapi import HTTPException, status
+import logging
 
 router = APIRouter()
+
+logger = logging.getLogger("uvicorn")
 
 
 @router.post("/", response_model=TransactionResponse)
@@ -29,6 +33,30 @@ def read_transactions(
     username = decode_access_token(token).username
     user_id = user_service.get_user_by_username(db, username).id
     return transaction_service.get_transactions(db, user_id)
+
+
+@router.get("/metrics")
+def get_transaction_metrics(
+    db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
+):
+    logger.info("Getting transaction metrics")
+    try:
+        decoded_token = decode_access_token(token)
+        username = decoded_token.username
+        user = user_service.get_user_by_username(db, username)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            )
+        user_id = user.id
+        logger.info(f"User {username} requested transaction metrics")
+        return transaction_service.get_transaction_metrics(db, user_id)
+    except Exception as e:
+        (logger.error(f"Error getting transaction metrics: {e}"))
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Invalid token or data",
+        )
 
 
 @router.get("/{transaction_id}", response_model=TransactionResponse)
