@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.routes import category, user, transaction
+from app.routes import category, transaction, user
 
 api_router = APIRouter()
 

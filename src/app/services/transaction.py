@@ -1,8 +1,8 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.models.transaction import Transaction
 from app.schemas.transaction import TransactionCreate
-from sqlalchemy import func
 
 
 # Transaction CRUD

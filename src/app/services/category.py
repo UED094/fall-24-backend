@@ -1,9 +1,9 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.models.category import Category
 from app.models.transaction import Transaction
 from app.schemas.category import CategoryBase, CategoryCreate
-from sqlalchemy import func
 from app.schemas.transaction import TransactionType
 
 
