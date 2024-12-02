@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+import logging
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 import app.services.transaction as transaction_service
@@ -6,8 +8,6 @@ import app.services.user as user_service
 from app.core.auth import decode_access_token, oauth2_scheme
 from app.dependencies import get_db
 from app.schemas.transaction import TransactionCreate, TransactionResponse
-from fastapi import HTTPException, status
-import logging
 
 router = APIRouter()
 
